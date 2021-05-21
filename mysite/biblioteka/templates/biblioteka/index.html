@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Katalog biblioteki</title>
+
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'biblioteka/style.css' %}">
+  </head>
+  <body>
+    <h1>Katalog biblioteki</h1>
+
+    {% if ksiazka_lista %}
+        <ul>
+        {% for ksiazka in ksiazka_lista %}
+            <li>{{ ksiazka.tytul }}</li> 
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>Brak książek.</p>
+    {% endif %}
+  </body>
+</html>
