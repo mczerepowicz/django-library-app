@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import AbstractUser
 import uuid
 
 # Create your models here.
@@ -7,7 +8,7 @@ class Autor(models.Model):
     imie = models.CharField(max_length=20)
     nazwisko = models.CharField(max_length=30)
     data_urodzenia = models.DateField('Data urodzenia')
-    data_smierci = models.DateField('Data smierci')
+    data_smierci = models.DateField('Data smierci', null=True, blank=True)
     
     def __str__(self):
         return '{0}, {1}'.format(self.imie, self.nazwisko)
@@ -29,14 +30,11 @@ class Ksiazka(models.Model):
         return self.tytul
     
     
-class Wydanie(models.Model):
-    wydawnictwo = models.CharField(max_length=100)
-    data = models.DateField('Data wydania')
-    
-    ksiazka = models.ForeignKey(Ksiazka, on_delete=models.CASCADE)
-    
+class Wydawnictwo(models.Model):
+    nazwa_wydawnictwa = models.CharField(max_length=100)
+        
     def __str__(self):
-        return self.ksiazka.tytul
+        return self.nazwa_wydawnictwa
 
     
 class Jezyk(models.Model):
@@ -44,20 +42,28 @@ class Jezyk(models.Model):
     
     def __str__(self):
         return self.nazwa_jezyka
+    
+class User(AbstractUser):
+    is_czytelnik = models.BooleanField(default=False)
+    is_bibliotekarz = models.BooleanField(default=False)
+    first_name = models.CharField(max_length=100)
+    last_name = models.CharField(max_length=100)
 
-class Ocena(models.Model):
-    komentarz = models.TextField(max_length=1000)
-    
-    def __str__(self):
-        return self.komentarz
-    
+class Czytelnik(models.Model):
+    user = models.OneToOneField(User, on_delete = models.CASCADE, primary_key = True)
+    phone_number = models.CharField(max_length=20)
+
+class Bibliotekarz(models.Model):
+    user = models.OneToOneField(User, on_delete = models.CASCADE, primary_key = True)
+    phone_number = models.CharField(max_length=20)
     
 class Egzemplarz(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, help_text='Unikalny klucz')
-    wydanie = models.ForeignKey(Wydanie, on_delete=models.CASCADE)
+    data = models.DateField('Data wydania', null=True, blank=True)
+    wydawnictwo = models.ForeignKey(Wydawnictwo, on_delete=models.CASCADE)
     jezyk = models.ForeignKey(Jezyk, on_delete=models.CASCADE)
-    ocena = models.ForeignKey(Ocena, on_delete=models.CASCADE)
-
+    ksiazka = models.ForeignKey(Ksiazka, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     
     DOSTEPNOSC_STATUS = (
         ('d', 'Dostepna'),
@@ -73,7 +79,15 @@ class Egzemplarz(models.Model):
     )
     
     def __str__(self):
-        return self.wydanie.ksiazka.tytul
+        return self.ksiazka.tytul
+    
+class Ocena(models.Model):
+    komentarz = models.TextField(max_length=1000)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    egzemplarz = models.ForeignKey(Egzemplarz, on_delete=models.CASCADE, null=True, blank=True)
+
+    def __str__(self):
+        return self.komentarz
     
 
 

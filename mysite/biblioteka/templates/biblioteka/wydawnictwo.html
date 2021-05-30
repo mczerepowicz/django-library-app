@@ -24,9 +24,22 @@
             </nav>
         </header>
         <main>
-            <section id="sglowna">
+            <section id="ksiazki">
                 <div class="sekcja">
-                    <h1>KATALOG BIBLIOTEKI</h1>
+                    <ul>
+                    {% if request.user.is_authenticated %}
+                        <p><a href="{% url 'biblioteka:formWyd' %}">Dodaj wydawnictwo</a></p>
+                    {% endif %}
+                    {% if wyd_lista %}
+                        {% for w in wyd_lista %}
+                            <li>
+                                <a href="{% url 'biblioteka:wydDetail' w.id %}">{{ w.nazwa_wydawnictwa }}</a>
+                            </li> 
+                        {% endfor %}
+                    {% else %}
+                        <h1>Brak wydawnictw</h1>
+                    {% endif %}  
+                </ul>              
                 </div>
             </section>
         </main>

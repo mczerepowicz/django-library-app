@@ -24,10 +24,29 @@
             </nav>
         </header>
         <main>
-            <section id="sglowna">
+            <section id="ksiazki">
                 <div class="sekcja">
-                    <h1>KATALOG BIBLIOTEKI</h1>
-                </div>
+                    <ul>
+                        <li>
+                            {{ egz.ksiazka.tytul }}, {{egz.wydanie.wydawnictwo}}<br>
+                            Data wydania:  {{ egz.data }}<br>
+                            Dostępność: {{egz.status}}<br>
+                            Komentarze: {{egz.ocena.komentarz}}
+                            {% if ocena_lista %}
+                            {% for o in ocena_lista %}
+                                {% if o.egzemplarz == egz %}
+                                    <br> {{o.komentarz}}
+                                {% endif %}
+                            {% endfor %}
+                            {% endif %}
+                            {% if request.user.is_authenticated %}
+                            <p><a href="{% url 'biblioteka:usun' egz.id %}">Usuń</a></p>
+                            <p><a href="{% url 'biblioteka:edycja' egz.id %}">Edytuj</a></p>
+                            <p><a href="{% url 'biblioteka:komentarz' egz.id %}">Dodajj komentarz</a></p>
+                            {% endif %}
+                        </li> 
+                    </ul>              
+                 </div>
             </section>
         </main>
         <footer>

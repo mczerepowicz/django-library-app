@@ -24,10 +24,19 @@
             </nav>
         </header>
         <main>
-            <section id="sglowna">
+            <section id="ksiazki">
                 <div class="sekcja">
-                    <h1>KATALOG BIBLIOTEKI</h1>
-                </div>
+
+                    <ul>
+                        <li>
+                            {{wyd.nazwa_wydawnictwa}}
+                            {% if request.user.is_authenticated %}
+                            <p><a href="{% url 'biblioteka:usunWyd' wyd.id %}">Usuń</a></p>
+                            <p><a href="{% url 'biblioteka:edycjaWyd' wyd.id %}">Edytuj</a></p>
+                            {% endif %}
+                        </li> 
+                    </ul>              
+                 </div>
             </section>
         </main>
         <footer>

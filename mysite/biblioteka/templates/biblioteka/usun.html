@@ -24,9 +24,14 @@
             </nav>
         </header>
         <main>
-            <section id="sglowna">
+            <section id="formularz">
                 <div class="sekcja">
-                    <h1>KATALOG BIBLIOTEKI</h1>
+                        Czy na pewno chcesz usunąć rekord? 
+                        <br>
+                        <form method="post">
+                            {% csrf_token %}
+                            <button type="submit">Usuń</button>
+                        </form>   
                 </div>
             </section>
         </main>

@@ -24,9 +24,13 @@
             </nav>
         </header>
         <main>
-            <section id="sglowna">
+            <section id="formularz">
                 <div class="sekcja">
-                    <h1>KATALOG BIBLIOTEKI</h1>
+                        <form method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            {{ form }}
+                            <button type="submit">Zaktualizuj</button>
+                        </form>   
                 </div>
             </section>
         </main>

@@ -24,10 +24,19 @@
             </nav>
         </header>
         <main>
-            <section id="sglowna">
+            <section id="ksiazki">
                 <div class="sekcja">
-                    <h1>KATALOG BIBLIOTEKI</h1>
-                </div>
+
+                    <ul>
+                        <li>
+                            {{gatunek.nazwa_gatunku}}
+                            {% if request.user.is_authenticated %}
+                                <p><a href="{% url 'biblioteka:usunGat' gatunek.id %}">Usuń</a></p>
+                                <p><a href="{% url 'biblioteka:edycjaGat' gatunek.id %}">Edytuj</a></p>
+                            {% endif %}
+                        </li> 
+                    </ul>              
+                 </div>
             </section>
         </main>
         <footer>

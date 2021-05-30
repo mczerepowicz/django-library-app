@@ -24,9 +24,32 @@
             </nav>
         </header>
         <main>
-            <section id="sglowna">
+            <section id="ksiazki">
                 <div class="sekcja">
-                    <h1>KATALOG BIBLIOTEKI</h1>
+                    <ul>                     
+                    <h1>Egzemplarze</h1>
+                    Gatunki:
+                    {% for g in gatunek_lista %}
+                        {{ g.nazwa_gatunku }}
+                    {% endfor %}
+                    <br>Autorzy:
+                    {% for a in autor_lista %}
+                        {{ a.imie }} {{ a.nazwisko }}<br>
+                    {% endfor %}
+                    
+                    {% if egzemplarz_lista %}
+                        {% for egzemplarz in egzemplarz_lista %}
+                            {% if egzemplarz.ksiazka == ksiazka %}
+                                <br> <li><a href="{% url 'biblioteka:egzDetail' egzemplarz.id %}">{{ ksiazka.tytul }}, {{egzemplarz.wydawnictwo.nazwa_wydawnictwa}}</a></li> 
+                            {% endif %}
+                        {% endfor %}
+                    {% else %}
+                        {% if request.user.is_authenticated %}
+                        <p><a href="{% url 'biblioteka:formEgzemplarz' %}">Dodaj egzemplarz</a></p>
+                        {% endif %}
+                        <h1>Brak egzemplarzy</h1>
+                    {% endif %} 
+                    </ul>               
                 </div>
             </section>
         </main>

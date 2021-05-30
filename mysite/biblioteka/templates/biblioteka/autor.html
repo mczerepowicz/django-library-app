@@ -24,9 +24,22 @@
             </nav>
         </header>
         <main>
-            <section id="sglowna">
+            <section id="ksiazki">
                 <div class="sekcja">
-                    <h1>KATALOG BIBLIOTEKI</h1>
+                    {% if autor_lista %}
+                    <ul>
+                    {% if request.user.is_authenticated %}
+                        <p><a href="{% url 'biblioteka:formAutor' %}">Dodaj autora</a></p>
+                    {% endif %}
+                    {% for autor in autor_lista %}
+                        <li>
+                            <a href="{% url 'biblioteka:autorDetail' autor.id %}">{{ autor.imie }} {{autor.nazwisko}}</a>
+                        </li> 
+                    {% endfor %}
+                    </ul>
+                {% else %}
+                    <h1>Brak autorów</h1>
+                {% endif %}                
                 </div>
             </section>
         </main>
