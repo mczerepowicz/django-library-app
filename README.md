@@ -1,1 +1,1 @@
-# biblioteka_projekt
+# django-library-app
